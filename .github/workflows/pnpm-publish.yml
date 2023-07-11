@@ -1,0 +1,43 @@
+
+on:
+  workflow_call:
+  
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - registry: https://registry.npmjs.org/
+            token_secret_key: NPM_TOKEN
+          - registry: https://npm.pkg.github.com/
+            token_secret_key: GITHUB_TOKEN
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+        with:
+          fetch-depth: 2
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd # v2.2.4
+        with:
+          version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@e33196f7422957bea03ed53f6fbb155025ffc7b8 # v3.7.0
+        with:
+          node-version-file: .node-version
+          check-latest: true
+          cache: 'pnpm'
+          registry-url: ${{ matrix.registry }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Compile/Build TypeScript project
+        run: pnpm run build
+
+      - name: Publish package to npm and GitHub packages registry
+        run: pnpm run release -- --registry ${{ matrix.registry }} --no-verify-access
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets[matrix.token_secret_key] }}
