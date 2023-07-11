@@ -34,8 +34,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Compile/Build TypeScript project
-        run: pnpm run build
+      - name: Compile/Build TypeScript project if present
+        run: pnpm run build --if-present
 
       - name: Publish package to npm and GitHub packages registry
         run: pnpm run release --registry ${{ matrix.registry }} --no-verify-access
