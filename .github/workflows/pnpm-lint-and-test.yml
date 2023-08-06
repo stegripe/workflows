@@ -27,7 +27,7 @@ jobs:
         with:
           node-version-file: .node-version
           check-latest: true
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
