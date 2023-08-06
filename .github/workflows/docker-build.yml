@@ -32,7 +32,7 @@ jobs:
         run: if [ "${{ github.event_name }}" = "release" ]; then echo ::set-output name=name::; else echo ::set-output name=name::-dev; fi
 
       - id: string
-        uses: ASzc/change-string-case-action@2d2b5579578b47731b89504f451849f3f75d4ed7 # v3
+        uses: ASzc/change-string-case-action@07c1e24a97f0951e13f88870b99c058fcf0b14cf # v5
         with:
           string: ${{ github.repository }}
 
