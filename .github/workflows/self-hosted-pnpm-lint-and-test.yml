@@ -1,0 +1,36 @@
+name: Lint code & compile test
+
+on:
+  workflow_call:
+
+jobs:
+  lint:
+    uses: clytage/workflows/.github/workflows/pnpm-lint.yml@main
+    secrets: inherit
+
+  compile:
+    needs: lint
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        with:
+          fetch-depth: 2
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@d882d12c64e032187b2edb46d3a0d003b7a43598 # v2.4.0
+        with:
+          version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
+        with:
+          node-version-file: .node-version
+          check-latest: true
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Test compile
+        run: pnpm run build && rm -rf dist
