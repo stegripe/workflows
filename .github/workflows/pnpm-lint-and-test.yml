@@ -5,7 +5,7 @@ on:
 
 jobs:
   lint:
-    uses: clytage/workflows/.github/workflows/self-hosted-pnpm-lint.yml@main
+    uses: clytage/workflows/.github/workflows/pnpm-lint.yml@main
     secrets: inherit
 
   compile:
