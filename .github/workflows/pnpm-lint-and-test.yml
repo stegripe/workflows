@@ -1,4 +1,4 @@
-name: Lint code & compile test
+name: Lint code and compile test
 
 on:
   workflow_call:

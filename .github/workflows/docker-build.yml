@@ -1,4 +1,4 @@
-name: Build & Push to container registry
+name: Build and Push to container registry
 
 on:
   workflow_call
