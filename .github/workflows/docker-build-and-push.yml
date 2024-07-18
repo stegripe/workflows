@@ -1,4 +1,4 @@
-name: Build and Push to container registry
+name: Build and Push Docker Image to the container image registry
 
 on:
   workflow_call
