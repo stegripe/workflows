@@ -5,7 +5,7 @@ on:
 
 jobs:
   lint:
-    uses: stegripe/workflows/.github/workflows/pnpm-lint.yml@main
+    uses: stegripe/workflows/.github/workflows/pnpm-lint.yaml@main
     secrets: inherit
 
   compile:
