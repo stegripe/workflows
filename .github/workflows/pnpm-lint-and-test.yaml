@@ -1,4 +1,4 @@
-name: Lint code and compile test
+name: Lint code and compile setup script
 
 on:
   workflow_call:
