@@ -1,4 +1,4 @@
-name: Build and Push Docker Image to the container image registry (amd64 only)
+name: "Build and Push Docker Image to the container image registry (multi-arch: amd64 & arm64)"
 
 on:
   workflow_call:
@@ -53,12 +53,12 @@ jobs:
             ${{ steps.extract_tag.outputs.TAG_NAME }}
             latest
 
-      - name: Build and push Docker image (amd64)
+      - name: Build and push Docker image (amd64 & arm64)
         uses: docker/build-push-action@v6
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,mode=max
