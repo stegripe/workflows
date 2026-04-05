@@ -1,4 +1,4 @@
-name: Publish to NPM and GitHub registry
+name: Publish to NPM and GitHub Registry
 
 on:
   workflow_call:

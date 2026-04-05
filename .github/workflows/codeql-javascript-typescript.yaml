@@ -21,7 +21,7 @@ on:
 
 jobs:
   analyze:
-    name: Analyze (javascript-typescript)
+    name: CodeQL Analyze (javascript-typescript)
     runs-on: ${{ inputs.runner }}
     permissions:
       actions: read
@@ -35,17 +35,17 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
-          node-version-file: ${{ inputs.node-version-file }}
+          node-version-file: ${{ inputs['node-version-file'] }}
           check-latest: true
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@5c8a8a642e79153f5d047b10ec1cba1d1cc65699 # v3
         with:
           languages: javascript-typescript
-          build-mode: ${{ inputs.build-mode }}
+          build-mode: ${{ inputs['build-mode'] }}
 
       - name: Autobuild
-        if: ${{ inputs.build-mode == "autobuild" }}
+        if: ${{ inputs['build-mode'] == 'autobuild' }}
         uses: github/codeql-action/autobuild@5c8a8a642e79153f5d047b10ec1cba1d1cc65699 # v3
 
       - name: Perform CodeQL Analysis

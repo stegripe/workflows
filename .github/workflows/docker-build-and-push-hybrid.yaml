@@ -1,4 +1,4 @@
-name: "Build and Push Docker Image to the container image registry (multi-arch: amd64 & arm64)"
+name: Build and Push Docker Image to the Container Image Registry (amd64/arm64)
 
 on:
   workflow_call:
@@ -15,14 +15,14 @@ jobs:
         uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4
 
       - name: Log in to GitHub Container Registry
-        if: ${{ github.event_name != "pull_request" }}
+        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract tag name (release only)
+      - name: Extract tag name (release)
         id: extract_tag
         if: ${{ github.event_name == 'release' }}
         run: echo "TAG_NAME=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
@@ -53,7 +53,7 @@ jobs:
             ${{ steps.extract_tag.outputs.TAG_NAME }}
             latest
 
-      - name: Build and push Docker image (amd64 & arm64)
+      - name: Build and push Docker image (amd64-arm64)
         uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7
         with:
           context: .
