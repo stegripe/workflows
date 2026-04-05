@@ -1,0 +1,54 @@
+name: Advanced CodeQL (JavaScript/TypeScript)
+
+on:
+  workflow_call:
+    inputs:
+      runner:
+        description: Runner label for the analysis job.
+        required: false
+        default: self-hosted
+        type: string
+      node-version-file:
+        description: Path to the Node version file in the caller repository.
+        required: false
+        default: .node-version
+        type: string
+      build-mode:
+        description: CodeQL build mode, one of none or autobuild.
+        required: false
+        default: none
+        type: string
+
+jobs:
+  analyze:
+    name: Analyze (javascript-typescript)
+    runs-on: ${{ inputs.runner }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6
+        with:
+          node-version-file: ${{ inputs.node-version-file }}
+          check-latest: true
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@5c8a8a642e79153f5d047b10ec1cba1d1cc65699 # v3
+        with:
+          languages: javascript-typescript
+          build-mode: ${{ inputs.build-mode }}
+
+      - name: Autobuild
+        if: ${{ inputs.build-mode == "autobuild" }}
+        uses: github/codeql-action/autobuild@5c8a8a642e79153f5d047b10ec1cba1d1cc65699 # v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@5c8a8a642e79153f5d047b10ec1cba1d1cc65699 # v3
+        with:
+          category: /language:javascript-typescript
