@@ -1,4 +1,4 @@
-name: Publish to NPM and GitHub registry
+name: PNPM Publish (NPM and GitHub Registry)
 
 on:
   workflow_call:
@@ -18,27 +18,22 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 2
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
+      - name: Set up pnpm
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
         with:
           version: latest
-
-      - name: Setup Node.js
-        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6
+      - name: Set up Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
           node-version-file: .node-version
           check-latest: true
           cache: pnpm
           registry-url: ${{ matrix.registry }}
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Compile/Build TypeScript project if present
+      - name: Build project (if present)
         run: pnpm run --if-present build
-
-      - name: Publish package to NPM and GitHub packages registry
+      - name: Publish package to npm and GitHub Packages registry
         run: pnpm run release --registry ${{ matrix.registry }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets[matrix.token_secret_key] }}
