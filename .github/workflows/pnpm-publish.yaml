@@ -38,5 +38,5 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets[matrix.token_secret_key] }}
       - name: Cleanup
-        uses: atos-actions/clean-self-hosted-runner@v1
+        uses: atos-actions/clean-self-hosted-runner@c6ce136031329a4435508e02b3f97fd85353f744 # v1
         if: ${{ always() }}
