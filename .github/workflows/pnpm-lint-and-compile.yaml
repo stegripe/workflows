@@ -27,6 +27,8 @@ jobs:
           PNPM_CONFIG_MINIMUM_RELEASE_AGE: 0
       - name: Lint code
         run: pnpm --config.verify-deps-before-run=false --config.strict-dep-builds=false run lint
+        env:
+          PNPM_CONFIG_MINIMUM_RELEASE_AGE: 0
 
   compile:
     needs: lint
@@ -36,20 +38,21 @@ jobs:
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 2
+      - name: Set up pnpm
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6
+        with:
+          version: 11.7.0
       - name: Set up Node.js
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version-file: .node-version
           check-latest: false
           cache: pnpm
-      - name: Set up pnpm
-        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6
-        with:
-          version: 11.7.0
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --config.strict-dep-builds=false --config.dangerously-allow-all-builds=true
+        env:
+          PNPM_CONFIG_MINIMUM_RELEASE_AGE: 0
       - name: Compile code
         run: pnpm --config.verify-deps-before-run=false --config.strict-dep-builds=false run build && rm -rf dist
-      - name: Cleanup
-        uses: atos-actions/clean-self-hosted-runner@c6ce136031329a4435508e02b3f97fd85353f744 # v1
-        if: ${{ always() }}
+        env:
+          PNPM_CONFIG_MINIMUM_RELEASE_AGE: 0
