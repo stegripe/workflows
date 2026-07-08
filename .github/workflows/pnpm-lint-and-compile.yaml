@@ -23,6 +23,8 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --config.strict-dep-builds=false --config.dangerously-allow-all-builds=true
+        env:
+          PNPM_CONFIG_MINIMUM_RELEASE_AGE: 0
       - name: Lint code
         run: pnpm --config.verify-deps-before-run=false --config.strict-dep-builds=false run lint
 
